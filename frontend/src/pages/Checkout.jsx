@@ -9,95 +9,85 @@ export default function Checkout() {
     payment: "mpesa",
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Order Submitted:", formData);
     alert("✅ Order placed successfully!");
+    console.log(formData);
   };
 
   return (
-    <div className="container mx-auto px-6 py-10">
-      <h1 className="text-3xl font-bold mb-6">Checkout</h1>
+    // Full-page background div
+    <div className="min-h-screen bg-blue-200 dark:bg-black text-gray-800 dark:text-gray-200 flex justify-center items-start py-10">
+      
+      {/* Centered form container */}
+      <div className="w-full max-w-2xl px-6">
+        <h1 className="text-3xl font-bold mb-6">Checkout</h1>
 
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white shadow-md rounded-lg p-6 space-y-6 max-w-2xl mx-auto"
-      >
-        {/* Customer Info */}
-        <div>
-          <label className="block font-medium mb-2">Full Name</label>
+        <form
+          onSubmit={handleSubmit}
+          className="bg-blue-200 dark:bg-gray-900 rounded-lg p-6 space-y-6 shadow-md shadow-gray-500 dark:shadow-gray-400"
+        >
           <input
             type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
+            placeholder="Full Name"
             required
-            className="w-full border rounded-lg px-4 py-2"
+            className="w-full border rounded-lg px-4 py-2 dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-400"
           />
-        </div>
 
-        <div>
-          <label className="block font-medium mb-2">Email</label>
           <input
             type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
+            placeholder="Email"
             required
-            className="w-full border rounded-lg px-4 py-2"
+            className="w-full border rounded-lg px-4 py-2 dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-400"
           />
-        </div>
 
-        <div>
-          <label className="block font-medium mb-2">Phone Number</label>
           <input
             type="tel"
             name="phone"
             value={formData.phone}
             onChange={handleChange}
+            placeholder="Phone Number"
             required
-            className="w-full border rounded-lg px-4 py-2"
+            className="w-full border rounded-lg px-4 py-2 dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-400"
           />
-        </div>
 
-        <div>
-          <label className="block font-medium mb-2">Delivery Address</label>
           <textarea
             name="address"
             value={formData.address}
             onChange={handleChange}
+            placeholder="Delivery Address"
             required
-            className="w-full border rounded-lg px-4 py-2"
+            className="w-full border rounded-lg px-4 py-2 dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-400"
           />
-        </div>
 
-        {/* Payment Method */}
-        <div>
-          <label className="block font-medium mb-2">Payment Method</label>
           <select
             name="payment"
             value={formData.payment}
             onChange={handleChange}
-            className="w-full border rounded-lg px-4 py-2"
+            className="w-full border rounded-lg px-4 py-2 dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-400"
           >
             <option value="mpesa">M-Pesa</option>
             <option value="card">Credit/Debit Card</option>
             <option value="cod">Cash on Delivery</option>
           </select>
-        </div>
 
-        {/* Submit */}
-        <button
-          type="submit"
-          className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition"
-        >
-          Place Order
-        </button>
-      </form>
+          <button
+            type="submit"
+            className="w-full bg-blue-900 text-white dark:text-blue-200 px-6 py-3 rounded-lg hover:bg-blue-700 transition"
+          >
+            Place Order
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
