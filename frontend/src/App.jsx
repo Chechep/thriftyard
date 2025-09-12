@@ -6,6 +6,8 @@ import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail"; // new
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+import Login from "./pages/signup";
+import Signup from "./pages/signup";
 
 function App() {
   return (

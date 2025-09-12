@@ -19,6 +19,7 @@ export default function Navbar() {
         {/* Navigation Links */}
         <div className="space-x-6 flex items-center">
           <Link to="/" className="hover:text-indigo-400 transition">Home</Link>
+
           <Link to="/cart" className="relative hover:text-indigo-400 transition">
             Cart
             {totalItems > 0 && (
@@ -26,6 +27,20 @@ export default function Navbar() {
                 {totalItems}
               </span>
             )}
+          </Link>
+
+          {/* Login & Sign Up */}
+          <Link 
+            to="/login" 
+            className="px-3 py-1 border rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700 transition"
+          >
+            Login
+          </Link>
+          <Link 
+            to="/signup" 
+            className="px-3 py-1 border rounded-lg bg-indigo-500 text-white hover:bg-indigo-600 transition"
+          >
+            Sign Up
           </Link>
 
           {/* Dark Mode Toggle */}
