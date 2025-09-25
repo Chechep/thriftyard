@@ -1,15 +1,30 @@
 import { useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import { CartContext } from "../context/CartContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { auth } from "../firebase";
+import { signOut } from "firebase/auth";
+import { LogOut, Moon, Sun } from "lucide-react";
 
 export default function Navbar() {
   const { darkMode, toggleDarkMode } = useContext(ThemeContext);
   const { cart } = useContext(CartContext);
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed:", error.message);
+    }
+  };
+
+  const user = auth.currentUser;
 
   return (
-    <nav className="bg-blue-200 dark:bg-black text-black px-6 py-4 dark:text-white shadow-md transition-colors">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-transparent text-black dark:text-white px-6 py-4 shadow-md transition-colors">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <Link to="/" className="text-2xl font-bold">
@@ -19,7 +34,6 @@ export default function Navbar() {
         {/* Navigation Links */}
         <div className="space-x-6 flex items-center">
           <Link to="/" className="hover:text-indigo-400 transition">Home</Link>
-
           <Link to="/cart" className="relative hover:text-indigo-400 transition">
             Cart
             {totalItems > 0 && (
@@ -29,26 +43,25 @@ export default function Navbar() {
             )}
           </Link>
 
-          {/* Login & Sign Up */}
-          <Link 
-            to="/login" 
-            className="px-3 py-1 border rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700 transition"
-          >
-            Login
-          </Link>
-          <Link 
-            to="/signup" 
-            className="px-3 py-1 border rounded-lg bg-indigo-500 text-white hover:bg-indigo-600 transition"
-          >
-            Sign Up
-          </Link>
+          {/* Auth Section */}
+          {user ? (
+            <button
+              onClick={handleLogout}
+              className="flex items-center space-x-1 px-3 py-1 border rounded-lg hover:bg-blue-300 dark:hover:bg-gray-500 transition"
+            >
+              <LogOut size={18} />
+              <span>Logout</span>
+            </button>
+          ) : (
+            <Link to="/login" className="hover:text-indigo-400 transition">Login</Link>
+          )}
 
           {/* Dark Mode Toggle */}
           <button
             onClick={toggleDarkMode}
-            className="ml-4 px-3 py-1 border rounded-lg hover:bg-gray-400 dark:hover:bg-gray-600 transition"
+            className="ml-4 p-2 rounded-lg"
           >
-            {darkMode ? "Light" : "Dark"}
+            {darkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
         </div>
       </div>
