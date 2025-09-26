@@ -1,18 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import ProductCardMinimal from "./ProductCardMinimal";
+import products from "../data/products";
 
 export default function FeaturedProducts() {
   const navigate = useNavigate();
 
-  const featured = [
-    { id: 1, name: "Smartphone", price: 15000, image: "https://via.placeholder.com/300x200" },
-    { id: 2, name: "Headphones", price: 2500, image: "https://via.placeholder.com/300x200" },
-    { id: 3, name: "Laptop", price: 60000, image: "https://via.placeholder.com/300x200" },
-  ];
-
-  const handleClick = (id) => {
-    navigate(`/products/${id}`);
-  };
+  const featured = products.slice(0, 3); // just take first 3 for demo
 
   return (
     <section className="container mx-auto px-6 py-10 bg-blue-200 text-gray-800 dark:text-gray-200 dark:bg-black">
@@ -28,7 +21,7 @@ export default function FeaturedProducts() {
           <ProductCardMinimal
             key={product.id}
             product={product}
-            onClick={() => handleClick(product.id)}
+            onClick={() => navigate(`/products/${product.id}`)}
           />
         ))}
       </div>

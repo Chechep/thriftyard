@@ -1,36 +1,50 @@
-import { createContext, useState, useEffect } from "react";
+// context/CartContext.jsx
+import { createContext, useState } from "react";
 
 export const CartContext = createContext();
 
-export function CartProvider({ children }) {
+export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
-  // Load cart from localStorage on mount
-  useEffect(() => {
-    const storedCart = localStorage.getItem("cart");
-    if (storedCart) setCart(JSON.parse(storedCart));
-  }, []);
+  const toggleCart = () => setIsCartOpen((prev) => !prev);
 
-  // Save cart to localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
-
-  const addToCart = (item) => {
-    const existing = cart.find((i) => i.id === item.id);
-    if (existing) {
-      setCart(cart.map(i => i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i));
-    } else {
-      setCart([...cart, { ...item, quantity: 1 }]);
-    }
+  const addToCart = (product) => {
+    setCart((prev) => {
+      const existing = prev.find((item) => item.id === product.id);
+      if (existing) {
+        return prev.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+      return [...prev, { ...product, quantity: 1 }];
+    });
   };
 
-  const removeFromCart = (id) => setCart(cart.filter(i => i.id !== id));
-  const updateQuantity = (id, qty) => setCart(cart.map(i => i.id === id ? { ...i, quantity: qty } : i));
+  const removeFromCart = (id) =>
+    setCart((prev) => prev.filter((item) => item.id !== id));
+
+  const updateQuantity = (id, quantity) =>
+    setCart((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, quantity: quantity } : item
+      )
+    );
 
   return (
-    <CartContext.Provider value={{ cart, setCart, addToCart, removeFromCart, updateQuantity }}>
+    <CartContext.Provider
+      value={{
+        cart,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        isCartOpen,
+        toggleCart,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );
-}
+};

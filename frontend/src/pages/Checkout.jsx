@@ -20,7 +20,7 @@ export default function Checkout() {
 
   return (
     // Full-page background div
-    <div className="min-h-screen bg-blue-200 dark:bg-black text-gray-800 dark:text-gray-200 flex justify-center items-start py-10">
+    <div className="min-h-screen pt-24 pb-10 bg-blue-200 dark:bg-black text-gray-800 dark:text-gray-200 flex justify-center items-start py-10">
       
       {/* Centered form container */}
       <div className="w-full max-w-2xl px-6">

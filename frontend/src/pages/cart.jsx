@@ -1,89 +1,103 @@
+// src/pages/Cart.jsx
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { X } from "lucide-react";
 import { useContext } from "react";
-import { Link } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
-import { auth } from "../firebase"; // 👈 make sure firebase.js exports auth
 
 export default function Cart() {
-  const { cart, updateQuantity, removeFromCart } = useContext(CartContext);
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
-  // Get current user from Firebase
-  const user = auth.currentUser;
+  const navigate = useNavigate();
+  const { cart, removeFromCart, updateQuantity } = useContext(CartContext);
 
   return (
-    <div className="min-h-screen pt-20 md:pt-24 pb-10 bg-blue-200 dark:bg-black text-gray-800 dark:text-gray-200">
-      <div className="container mx-auto">
-        
-        {/* Profile Section */}
-        {user && (
-          <div className="flex items-center mb-6 bg-blue-200 dark:bg-gray-900 p-4 rounded-lg shadow">
-            <img
-              src={user.photoURL || "https://via.placeholder.com/50"}
-              alt="Profile"
-              className="w-12 h-12 rounded-full object-cover"
-            />
-            <div className="ml-4">
-              <h2 className="text-lg font-semibold">
-                {user.displayName || user.email}
-              </h2>
-            </div>
-          </div>
-        )}
+    <>
+      {/* Overlay */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.5 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
+        className="fixed inset-0 bg-black z-40"
+        onClick={() => navigate(-1)} // Close when clicking outside
+      />
 
-        {/* Cart Section */}
-        <h1 className="text-3xl font-bold mb-6">Shopping Cart</h1>
+      {/* Sliding Cart */}
+      <motion.div
+        initial={{ x: "100%" }}
+        animate={{ x: 0 }}
+        exit={{ x: "100%" }}
+        transition={{ type: "tween", duration: 0.4 }}
+        className="fixed right-0 top-0 h-full w-96 bg-white shadow-lg z-50 p-4 flex flex-col"
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-bold">Your Cart</h2>
+          <button
+            onClick={() => navigate(-1)}
+            className="p-2 rounded-full hover:bg-gray-100"
+          >
+            <X size={20} />
+          </button>
+        </div>
 
-        {cart.length === 0 ? (
-          <p className="text-gray-600 dark:text-gray-400">Your cart is empty.</p>
-        ) : (
-          <div className="space-y-6">
-            {cart.map((item) => (
+        {/* Cart Items */}
+        <div className="flex-grow overflow-y-auto space-y-4">
+          {cart.length > 0 ? (
+            cart.map((item) => (
               <div
                 key={item.id}
-                className="flex items-center bg-white dark:bg-gray-800 shadow rounded-lg p-4"
+                className="flex items-center justify-between border-b pb-2"
               >
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="w-20 h-20 object-cover rounded-lg"
-                />
-                <div className="ml-4 flex-1">
-                  <h2 className="text-lg font-semibold">{item.name}</h2>
-                  <p className="text-gray-600 dark:text-gray-300">Ksh {item.price}</p>
-                  <div className="flex items-center mt-2">
-                    <input
-                      type="number"
-                      min="1"
-                      value={item.quantity}
-                      onChange={(e) =>
-                        updateQuantity(item.id, parseInt(e.target.value))
-                      }
-                      className="w-16 px-2 py-1 border rounded-lg text-center dark:bg-gray-700 dark:border-gray-600"
-                    />
+                <div>
+                  <p className="font-semibold">{item.name}</p>
+                  <p className="text-sm text-gray-600">{item.description}</p>
+                  <div className="flex items-center mt-1">
                     <button
-                      onClick={() => removeFromCart(item.id)}
-                      className="ml-4 text-red-600 hover:underline"
+                      onClick={() =>
+                        updateQuantity(item.id, item.quantity - 1)
+                      }
+                      disabled={item.quantity === 1}
+                      className="px-2 bg-gray-200 rounded"
                     >
-                      Remove
+                      -
+                    </button>
+                    <span className="px-3">{item.quantity}</span>
+                    <button
+                      onClick={() =>
+                        updateQuantity(item.id, item.quantity + 1)
+                      }
+                      className="px-2 bg-gray-200 rounded"
+                    >
+                      +
                     </button>
                   </div>
                 </div>
-                <p className="font-bold">Ksh {item.price * item.quantity}</p>
+                <div className="text-right">
+                  <p>${item.price}</p>
+                  <button
+                    onClick={() => removeFromCart(item.id)}
+                    className="text-red-500 text-sm"
+                  >
+                    Remove
+                  </button>
+                </div>
               </div>
-            ))}
+            ))
+          ) : (
+            <p className="text-center text-gray-500">Your cart is empty.</p>
+          )}
+        </div>
 
-            {/* Cart Summary */}
-            <div className="p-6 rounded-lg shadow-md dark:shadow-gray-700 dark:bg-gray-900 text-right">
-              <h2 className="text-xl font-bold">Total: Ksh {total}</h2>
-              <Link to="/checkout">
-                <button className="mt-4 bg-blue-600 dark:bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600">
-                  Proceed to Checkout
-                </button>
-              </Link>
-            </div>
-          </div>
+        {/* Checkout Button */}
+        {cart.length > 0 && (
+          <button
+            onClick={() => navigate("/checkout")}
+            className="mt-4 bg-black text-white py-2 rounded-lg"
+          >
+            Go to Checkout
+          </button>
         )}
-      </div>
-    </div>
+      </motion.div>
+    </>
   );
 }
