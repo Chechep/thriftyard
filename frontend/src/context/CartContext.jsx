@@ -1,4 +1,3 @@
-// context/CartContext.jsx
 import { createContext, useState } from "react";
 
 export const CartContext = createContext();
@@ -7,8 +6,10 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
+  // Toggle cart sidebar
   const toggleCart = () => setIsCartOpen((prev) => !prev);
 
+  // Add product to cart
   const addToCart = (product) => {
     setCart((prev) => {
       const existing = prev.find((item) => item.id === product.id);
@@ -21,15 +22,18 @@ export const CartProvider = ({ children }) => {
       }
       return [...prev, { ...product, quantity: 1 }];
     });
+    setIsCartOpen(true); // Open cart when item is added
   };
 
+  // Remove product from cart
   const removeFromCart = (id) =>
     setCart((prev) => prev.filter((item) => item.id !== id));
 
+  // Update quantity
   const updateQuantity = (id, quantity) =>
     setCart((prev) =>
       prev.map((item) =>
-        item.id === id ? { ...item, quantity: quantity } : item
+        item.id === id ? { ...item, quantity } : item
       )
     );
 

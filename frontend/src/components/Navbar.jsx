@@ -33,7 +33,15 @@ export default function Navbar() {
   const user = auth.currentUser;
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-transparent text-black dark:text-white px-6 py-4 shadow-md transition-colors">
+    <nav
+      className="
+        fixed top-0 left-0 w-full z-50
+        bg-white/30 dark:bg-black/30
+        backdrop-blur-md
+        text-black dark:text-white
+        px-6 py-4 shadow-md transition-colors
+      "
+    >
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <Link to="/" className="text-2xl font-bold">
@@ -43,7 +51,7 @@ export default function Navbar() {
         {/* Center Search Bar */}
         <form
           onSubmit={handleSearch}
-          className="flex items-center w-1/3 bg-gray-200 dark:bg-gray-800 rounded-lg px-3 py-1"
+          className="flex items-center w-1/3 bg-gray-200/60 dark:bg-gray-800/60 rounded-lg px-3 py-1 backdrop-blur-sm"
         >
           <input
             type="text"
@@ -65,7 +73,7 @@ export default function Navbar() {
           {/* Home Icon */}
           <Link
             to="/"
-            className="p-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700 transition"
+            className="p-2 rounded-lg hover:bg-gray-300/50 dark:hover:bg-gray-700/50 transition"
             title="Home"
           >
             <Home size={22} />
@@ -74,7 +82,7 @@ export default function Navbar() {
           {/* Cart Button */}
           <button
             onClick={toggleCart}
-            className="relative p-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700 transition"
+            className="relative p-2 rounded-lg hover:bg-gray-300/50 dark:hover:bg-gray-700/50 transition"
           >
             <ShoppingCart size={22} />
             {totalItems > 0 && (
@@ -88,7 +96,7 @@ export default function Navbar() {
           {user ? (
             <button
               onClick={handleLogout}
-              className="p-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700 transition"
+              className="p-2 rounded-lg hover:bg-gray-300/50 dark:hover:bg-gray-700/50 transition"
               title="Logout"
             >
               <LogOut size={22} />
@@ -102,7 +110,7 @@ export default function Navbar() {
           {/* Dark Mode Toggle */}
           <button
             onClick={toggleDarkMode}
-            className="ml-2 p-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700 transition"
+            className="ml-2 p-2 rounded-lg hover:bg-gray-300/50 dark:hover:bg-gray-700/50 transition"
           >
             {darkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>

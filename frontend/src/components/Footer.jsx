@@ -47,9 +47,6 @@ export default function Footer() {
               <a href="#" className="hover:text-white">
                 <Instagram />
               </a>
-              <a href="#" className="hover:text-white">
-                <Linkedin />
-              </a>
             </div>
           </div>
         </div>
