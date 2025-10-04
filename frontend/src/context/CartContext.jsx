@@ -22,7 +22,6 @@ export const CartProvider = ({ children }) => {
       }
       return [...prev, { ...product, quantity: 1 }];
     });
-    setIsCartOpen(true); // Open cart when item is added
   };
 
   // Remove product from cart

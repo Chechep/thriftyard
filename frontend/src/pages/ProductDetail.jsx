@@ -33,6 +33,7 @@ export default function ProductDetail() {
     { name: "Blue", bg: "bg-blue-500" },
     { name: "Black", bg: "bg-black" },
     { name: "Red", bg: "bg-red-500" },
+    { name: "white", bg: "bg-white"}
   ];
 
   return (
