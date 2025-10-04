@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    --toast-bg: #f0f9ff;
+    --toast-text: #1e3a8a;
+  }
+  
+  .dark {
+    --toast-bg: #1e293b; /* slate dark */
+    --toast-text: #f8fafc; /* white */
+  }
+  

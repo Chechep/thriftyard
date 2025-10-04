@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+import toast from "react-hot-toast";
 
 export const CartContext = createContext();
 
@@ -6,29 +7,30 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  // Toggle cart sidebar
   const toggleCart = () => setIsCartOpen((prev) => !prev);
 
-  // Add product to cart
   const addToCart = (product) => {
     setCart((prev) => {
       const existing = prev.find((item) => item.id === product.id);
       if (existing) {
+        toast.success(`Updated quantity for ${product.name}`);
         return prev.map((item) =>
           item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
+            ? { ...item, quantity: item.quantity + product.quantity }
             : item
         );
+      } else {
+        toast.success(`${product.name} added to cart ✅`);
+        return [...prev, { ...product }];
       }
-      return [...prev, { ...product, quantity: 1 }];
     });
   };
 
-  // Remove product from cart
-  const removeFromCart = (id) =>
+  const removeFromCart = (id) => {
     setCart((prev) => prev.filter((item) => item.id !== id));
+    toast.error("Item removed from cart ❌");
+  };
 
-  // Update quantity
   const updateQuantity = (id, quantity) =>
     setCart((prev) =>
       prev.map((item) =>
