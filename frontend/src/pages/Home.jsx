@@ -1,5 +1,6 @@
 import Hero from "../components/Hero";
 import FeaturedProducts from "../components/FeaturedProducts";
+import About from "../pages/About";
 
 export default function Home() {
   return (
