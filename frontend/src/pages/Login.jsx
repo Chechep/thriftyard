@@ -4,26 +4,36 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { auth } from "../firebase";
-import { Mail, Lock, Eye, EyeOff, LogIn, Chrome } from "lucide-react";
+import {
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  LogIn,
+} from "lucide-react";
+import { FcGoogle } from "react-icons/fc";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   // Email/Password Login
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
+    setMessage("");
     try {
       await signInWithEmailAndPassword(auth, email, password);
       navigate("/");
     } catch (err) {
-      setError("Invalid email or password");
+      setError("Invalid email or password.");
     }
   };
 
@@ -34,7 +44,22 @@ export default function Login() {
       await signInWithPopup(auth, provider);
       navigate("/");
     } catch (err) {
-      setError("Google sign-in failed. Try again.");
+      setError("Google sign-in failed. Please try again.");
+    }
+  };
+
+  // Forgot Password
+  const handleForgotPassword = async () => {
+    if (!email) {
+      setError("Please enter your email first.");
+      return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setMessage("Password reset email sent. Check your inbox.");
+      setError("");
+    } catch (err) {
+      setError("Failed to send reset email. Try again.");
     }
   };
 
@@ -46,7 +71,12 @@ export default function Login() {
           Login
         </h2>
 
-        {error && <p className="text-red-500 text-sm mb-4 text-center">{error}</p>}
+        {error && (
+          <p className="text-red-500 text-sm mb-3 text-center">{error}</p>
+        )}
+        {message && (
+          <p className="text-green-500 text-sm mb-3 text-center">{message}</p>
+        )}
 
         <form onSubmit={handleLogin} className="space-y-4">
           {/* Email Input */}
@@ -90,6 +120,15 @@ export default function Login() {
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
+            <div className="text-right mt-1">
+              <button
+                type="button"
+                onClick={handleForgotPassword}
+                className="text-sm text-sky-500 hover:underline"
+              >
+                Forgot Password?
+              </button>
+            </div>
           </div>
 
           {/* Login Button */}
@@ -99,19 +138,26 @@ export default function Login() {
           >
             Login
           </button>
-
-          {/* Google Login */}
-          <button
-            type="button"
-            onClick={handleGoogleLogin}
-            className="w-full border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-100 flex items-center justify-center gap-2 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
-          >
-            <Chrome className="text-red-500" size={20} />
-            Login with Google
-          </button>
         </form>
 
-        <p className="text-sm text-center mt-4 dark:text-gray-400">
+        {/* OR Divider */}
+        <div className="flex items-center my-5">
+          <div className="flex-grow border-t border-gray-300 dark:border-gray-700"></div>
+          <span className="mx-3 text-gray-500 dark:text-gray-400 text-sm">OR</span>
+          <div className="flex-grow border-t border-gray-300 dark:border-gray-700"></div>
+        </div>
+
+        {/* Google Login */}
+        <button
+          type="button"
+          onClick={handleGoogleLogin}
+          className="w-full border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-100 flex items-center justify-center gap-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition font-medium"
+        >
+          <FcGoogle size={22} />
+          Continue with Google
+        </button>
+
+        <p className="text-sm text-center mt-5 dark:text-gray-400">
           Don’t have an account?{" "}
           <Link
             to="/signup"
