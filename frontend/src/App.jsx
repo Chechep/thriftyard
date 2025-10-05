@@ -11,6 +11,7 @@ import Signup from "./pages/Signup";
 import SearchPage from "./pages/SearchPage";
 import { CartProvider } from "./context/CartContext";
 import About from "./pages/About";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/about" element={<About />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
           </Routes>
         </main>
         <Footer />

@@ -2,116 +2,161 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   createUserWithEmailAndPassword,
-  updateProfile,
-  signInWithPopup,
   GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 import { auth } from "../firebase";
+import { Mail, Lock, Eye, EyeOff, UserPlus } from "lucide-react";
+import { FcGoogle } from "react-icons/fc";
 
 export default function Signup() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  const handleChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-
-  const handleSubmit = async (e) => {
+  // Handle Signup with Email and Password
+  const handleSignup = async (e) => {
     e.preventDefault();
     setError("");
+    setMessage("");
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        formData.email,
-        formData.password
-      );
-      await updateProfile(userCredential.user, {
-        displayName: formData.name,
-      });
+      await createUserWithEmailAndPassword(auth, email, password);
+      setMessage("Account created successfully!");
       navigate("/");
     } catch (err) {
-      setError(err.message);
+      setError("Failed to create account. Try again.");
     }
   };
 
-  const handleGoogleSignUp = async () => {
+  // Handle Google Signup
+  const handleGoogleSignup = async () => {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
       navigate("/");
     } catch (err) {
-      setError(err.message);
+      setError("Google sign-up failed. Please try again.");
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-blue-200 dark:bg-black text-gray-800 dark:text-gray-200">
-      <div className="bg-white dark:bg-gray-900 p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-6 text-center">Sign Up</h1>
+    <div className="min-h-screen flex items-center justify-center bg-blue-200 dark:bg-black transition-colors">
+      <div className="bg-white dark:bg-gray-900 p-8 rounded-xl shadow-xl w-full max-w-md">
+        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800 dark:text-white flex items-center justify-center gap-2">
+          <UserPlus className="text-sky-500" size={28} />
+          Sign Up
+        </h2>
 
-        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+        {error && (
+          <p className="text-red-500 text-sm mb-3 text-center">{error}</p>
+        )}
+        {message && (
+          <p className="text-green-500 text-sm mb-3 text-center">{message}</p>
+        )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Full Name"
-            required
-            className="w-full border rounded-lg px-4 py-2 dark:bg-gray-700 dark:border-gray-600 focus:outline-none"
-          />
+        <form onSubmit={handleSignup} className="space-y-4">
+          {/* Email Input */}
+          <div>
+            <label className="block text-sm font-medium mb-1 dark:text-gray-300">
+              Email
+            </label>
+            <div className="flex items-center border rounded-lg dark:bg-gray-800 dark:border-gray-700 px-3">
+              <Mail className="text-gray-400 dark:text-gray-500 mr-2" size={18} />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="Enter your email"
+                className="w-full py-2 bg-transparent outline-none dark:text-white"
+              />
+            </div>
+          </div>
 
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Email"
-            required
-            className="w-full border rounded-lg px-4 py-2 dark:bg-gray-700 dark:border-gray-600 focus:outline-none"
-          />
+          {/* Password Input */}
+          <div>
+            <label className="block text-sm font-medium mb-1 dark:text-gray-300">
+              Password
+            </label>
+            <div className="flex items-center border rounded-lg dark:bg-gray-800 dark:border-gray-700 px-3">
+              <Lock className="text-gray-400 dark:text-gray-500 mr-2" size={18} />
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                placeholder="Enter password"
+                className="w-full py-2 bg-transparent outline-none dark:text-white"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+          </div>
 
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Password"
-            required
-            className="w-full border rounded-lg px-4 py-2 dark:bg-gray-700 dark:border-gray-600 focus:outline-none"
-          />
+          {/* Confirm Password */}
+          <div>
+            <label className="block text-sm font-medium mb-1 dark:text-gray-300">
+              Confirm Password
+            </label>
+            <div className="flex items-center border rounded-lg dark:bg-gray-800 dark:border-gray-700 px-3">
+              <Lock className="text-gray-400 dark:text-gray-500 mr-2" size={18} />
+              <input
+                type={showPassword ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                placeholder="Confirm password"
+                className="w-full py-2 bg-transparent outline-none dark:text-white"
+              />
+            </div>
+          </div>
 
+          {/* Signup Button */}
           <button
             type="submit"
-            className="w-full bg-blue-900 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+            className="w-full bg-sky-500 text-white py-2 rounded-lg hover:bg-sky-600 transition font-semibold"
           >
             Sign Up
           </button>
         </form>
 
-        {/* Google Sign Up */}
+        {/* OR Divider */}
+        <div className="flex items-center my-5">
+          <div className="flex-grow border-t border-gray-300 dark:border-gray-700"></div>
+          <span className="mx-3 text-gray-500 dark:text-gray-400 text-sm">OR</span>
+          <div className="flex-grow border-t border-gray-300 dark:border-gray-700"></div>
+        </div>
+
+        {/* Google Signup */}
         <button
-          onClick={handleGoogleSignUp}
-          className="mt-4 w-full flex items-center justify-center border border-gray-300 dark:border-gray-600 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+          type="button"
+          onClick={handleGoogleSignup}
+          className="w-full border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-100 flex items-center justify-center gap-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition font-medium"
         >
-          <img
-            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-            alt="Google"
-            className="w-5 h-5 mr-2"
-          />
-          Sign up with Google
+          <FcGoogle size={22} />
+          Continue with Google
         </button>
 
-        <p className="mt-6 text-sm text-center">
+        <p className="text-sm text-center mt-5 dark:text-gray-400">
           Already have an account?{" "}
           <Link
             to="/login"
-            className="text-blue-600 dark:text-blue-400 hover:underline"
+            className="text-sky-500 hover:underline font-medium"
           >
             Login
           </Link>
