@@ -5,7 +5,7 @@ import products from "../data/products";
 export default function FeaturedProducts() {
   const navigate = useNavigate();
 
-  const featured = products.slice(0, 3); // just take first 3 for demo
+  const featured = products.slice(0, 9);
 
   return (
     <section className="container mx-auto px-6 py-10 bg-blue-200 text-gray-800 dark:text-gray-200 dark:bg-black">
