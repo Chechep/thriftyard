@@ -7,7 +7,7 @@ import ProductDetail from "./pages/ProductDetail";
 import Cart from "./components/Cart";
 import Checkout from "./pages/Checkout";
 import Login from "./pages/Login";
-import Signup from "./pages/Signup";
+import Signup from "./pages/signup";
 import SearchPage from "./pages/SearchPage";
 import { CartProvider } from "./context/CartContext";
 import About from "./pages/About";
