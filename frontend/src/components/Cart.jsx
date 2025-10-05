@@ -20,7 +20,7 @@ export default function Cart() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             className="fixed inset-0 bg-black z-40"
-            onClick={toggleCart} // Close when clicking outside
+            onClick={toggleCart}
           />
 
           {/* Sliding Cart */}
@@ -29,7 +29,7 @@ export default function Cart() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "tween", duration: 0.4 }}
-            className="fixed right-0 top-0 h-full w-96 bg-white dark:bg-gray-900 shadow-lg z-50 p-4 flex flex-col"
+            className="fixed right-0 top-0 h-full w-96 bg-white dark:bg-gray-900 shadow-lg z-50 p-4 flex flex-col text-gray-900 dark:text-gray-100"
           >
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
@@ -48,10 +48,12 @@ export default function Cart() {
                 cart.map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-center justify-between border-b pb-2"
+                    className="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 pb-2"
                   >
                     <div>
-                      <p className="font-semibold">{item.name}</p>
+                      <p className="font-semibold text-gray-900 dark:text-gray-100">
+                        {item.name}
+                      </p>
                       <p className="text-sm text-gray-600 dark:text-gray-400">
                         {item.description}
                       </p>
@@ -61,26 +63,30 @@ export default function Cart() {
                             updateQuantity(item.id, item.quantity - 1)
                           }
                           disabled={item.quantity === 1}
-                          className="px-2 bg-gray-200 dark:bg-gray-700 rounded disabled:opacity-50"
+                          className="px-2 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded disabled:opacity-50"
                         >
                           -
                         </button>
-                        <span className="px-3">{item.quantity}</span>
+                        <span className="px-3 text-gray-800 dark:text-gray-200">
+                          {item.quantity}
+                        </span>
                         <button
                           onClick={() =>
                             updateQuantity(item.id, item.quantity + 1)
                           }
-                          className="px-2 bg-gray-200 dark:bg-gray-700 rounded"
+                          className="px-2 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded"
                         >
                           +
                         </button>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p>Ksh {item.price}</p>
+                      <p className="text-gray-800 dark:text-gray-200">
+                        Ksh {item.price}
+                      </p>
                       <button
                         onClick={() => removeFromCart(item.id)}
-                        className="text-red-500 text-sm"
+                        className="text-red-500 dark:text-red-400 text-sm hover:underline"
                       >
                         Remove
                       </button>
@@ -101,9 +107,9 @@ export default function Cart() {
                   toggleCart();
                   navigate("/checkout");
                 }}
-                className="mt-4 bg-black text-white dark:bg-blue-600 py-2 rounded-lg"
+                className="mt-4 bg-black text-white dark:bg-sky-600 dark:hover:bg-sky-500 py-2 rounded-lg font-semibold transition"
               >
-                Go to Checkout
+                Checkout
               </button>
             )}
           </motion.div>

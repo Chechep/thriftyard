@@ -82,7 +82,7 @@ export default function Checkout() {
 
           <button
             type="submit"
-            className="w-full bg-blue-900 text-white dark:text-blue-200 px-6 py-3 rounded-lg hover:bg-blue-700 transition"
+            className="w-full bg-sky-600 text-white dark:text-blue-200 px-6 py-3 rounded-lg hover:bg-sky-700 transition"
           >
             Place Order
           </button>
