@@ -6,10 +6,10 @@ export default function FeaturedProducts() {
   const navigate = useNavigate();
 
   // Select up to 9 featured products safely
-  const featured = Array.isArray(products) ? products.slice(0, 9) : [];
+  const featured = Array.isArray(products) ? products.slice(0, 6) : [];
 
   return (
-    <section className="container mx-auto px-6 py-12 bg-blue-200 text-gray-800 dark:text-gray-200 dark:bg-black">
+    <section className="container mx-auto px-6 py-12 text-gray-800 dark:text-gray-200">
       {/* Section Header */}
       <div className="flex justify-between items-center mb-8">
         <h2 className="text-3xl font-bold">Featured Products</h2>

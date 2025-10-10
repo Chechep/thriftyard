@@ -32,7 +32,7 @@ export default function ProductCard({ product }) {
         <h3 className="text-xl font-semibold">{product.name}</h3>
         <p className="text-sm text-gray-700 dark:text-gray-400">{product.category}</p>
         <p className="mt-2 text-gray-800 dark:text-gray-300">{product.description}</p>
-        <p className="mt-3 text-lg font-bold text-indigo-700 dark:text-indigo-400">
+        <p className="mt-3 text-lg font-bold text-black dark:text-white">
           Ksh {product.price}
         </p>
       </div>
