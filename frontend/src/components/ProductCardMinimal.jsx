@@ -4,7 +4,7 @@ export default function ProductCardMinimal({ product, onClick }) {
   return (
     <div
       onClick={onClick}
-      className="cursor-pointer bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition p-4 flex flex-col text-gray-800 dark:text-gray-200"
+      className="cursor-pointer rounded-xl shadow-md shadow-blue-300 hover:shadow-lg transition p-4 flex flex-col text-gray-800 dark:text-gray-200"
     >
       <img
         src={mainImage}

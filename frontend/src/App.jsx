@@ -12,6 +12,7 @@ import SearchPage from "./pages/SearchPage";
 import { CartProvider } from "./context/CartContext";
 import About from "./pages/About";
 import ResetPassword from "./pages/ResetPassword";
+import ProductTypes from "./components/ProductTypes";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/products" element={<Products />} />
             <Route path="/products/:id" element={<ProductDetail />} />
+            <Route path="/categories/:type" element={<ProductTypes />} />
             {/* Remove direct Cart route — handled by sidebar */}
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/signup" element={<Signup />} />
